@@ -116,7 +116,7 @@ app.get("/sellersactivos", async (req, res) => {
         res.status(500).send("Error interno");
     }
 });
-app.get("/", (req, res) => {
+app.get("/get", (req, res) => {
     res.send("Webhook listener activo");
 })
 
