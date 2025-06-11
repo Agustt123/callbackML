@@ -46,7 +46,7 @@ async function connectRabbit() {
     await rabbitChannel.assertQueue(queue, { durable: true });
 }
 
-app.post("/webhook", async (req, res) => {
+app.post("/incomes", async (req, res) => {
     const data = req.body;
     const incomeuserid = data.user_id ? data.user_id.toString() : "";
 
