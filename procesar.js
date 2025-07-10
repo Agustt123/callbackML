@@ -56,7 +56,7 @@ clientFF
 
 // RabbitMQ
 const rabbitMQUrl = "amqp://lightdata:QQyfVBKRbw6fBb@158.69.131.226:5672";
-const queue = "webhookml2";
+const queue = "webhookml";
 let rabbitConnection;
 let rabbitChannel;
 let isConnecting = false;
@@ -204,9 +204,9 @@ async function processWebhook(data2) {
                     };
                     await enviarMensajeEstadoML(
                         mensajeRA,
-                        "shipments_states_callback_ml2"
+                        "shipments_states_callback_ml"
                     );
-                    await enviarMensajeEstadoML(mensajeRA, "enviosml_ia2");
+                    await enviarMensajeEstadoML(mensajeRA, "enviosml_ia");
                     break;
 
                 case "flex-handshakes":
