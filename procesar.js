@@ -6,6 +6,7 @@ const axios = require("axios");
 let pLimit;
 let retryCount = 0;
 const maxRetries = 5;
+const migrationQueue = "callbackMS";
 
 // Inicializar p-limit
 async function initializePLimit() {
@@ -20,6 +21,22 @@ initializePLimit()
     .catch((err) => {
         console.error("Error al importar p-limit:", err);
     });
+async function enviarEventoMigracion({ topic, tabla, data }) {
+    try {
+        const mensaje = {
+            event: "INSERT",
+            source: "callback_ml",
+            topic,
+            tabla_origen: tabla,
+            timestamp: new Date().toISOString(),
+            data
+        };
+
+        await enviarMensajeEstadoML(mensaje, migrationQueue);
+    } catch (err) {
+        console.error("❌ Error enviando evento de migración:", err.message);
+    }
+}
 
 // Redis local
 const client = redis.createClient({
@@ -249,6 +266,16 @@ async function processWebhook(data2) {
                                     );
                                 } else {
                                     console.log(`✅ Registro insertado en ${tablename}`);
+
+                                    enviarEventoMigracion({
+                                        topic,
+                                        tabla: tablename,
+                                        data: {
+                                            seller_id: incomeuserid,
+                                            resource,
+                                            fecha: now
+                                        }
+                                    });
                                 }
                                 connection.release();
                             });
