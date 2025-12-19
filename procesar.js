@@ -23,6 +23,8 @@ initializePLimit()
     });
 async function enviarEventoMigracion({ topic, tabla, data }) {
     try {
+        console.log("hola");
+
         const mensaje = {
             event: "INSERT",
             source: "callback_ml",
